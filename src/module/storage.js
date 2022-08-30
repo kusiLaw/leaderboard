@@ -1,5 +1,3 @@
-import verifyObject from "./dataValidation.js";
-
 const getLocalStorage = () => {
   // Check if data is in storage and convert to js object
   if (localStorage.getItem('scores')) {
@@ -10,7 +8,6 @@ const getLocalStorage = () => {
 
 const setLocalStorage = (array) => {
   localStorage.setItem('scores', JSON.stringify(array));
-
 };
 
 export { setLocalStorage, getLocalStorage };

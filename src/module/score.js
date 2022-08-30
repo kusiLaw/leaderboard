@@ -1,25 +1,27 @@
-class Scores{
- constructor(initial = null){
-  initial ? this.data = [initial] : this.data =[] ;
+class Scores {
+ data
+
+ constructor(initial = []) {
+   this.data = initial;
  }
 
- add(score){
-  if(this.validate(score)){
-   this.data = this.data.concat(score);
-  }
+ add(score) {
+   if (Scores.validate(score)) {
+     this.data = this.data.concat(score);
+   }
  }
 
- reset(value){
-  this.data = [];
+ reset() {
+   this.data = [];
  }
 
- validate(score){
+ static validate(score) {
    if (!('name' in score
    && 'score' in score)) {
      return false;
    }
-  return true;
- };
+   return true;
+ }
 }
 
-export default Scores
+export default Scores;
