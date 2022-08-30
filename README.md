@@ -48,4 +48,4 @@ Give a star :star: if you like this project!
 Thanks to Microverse
 
 ### 📝 License
-This Project is <a href ="https://opensource.org/licenses/MIT">MIT </a> licensed
+This Project is [MIT](https://opensource.org/licenses/MIT) licensed
