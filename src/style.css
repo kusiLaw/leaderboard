@@ -18,19 +18,15 @@ header {
 }
 
 .container {
-  width: 50%;
+  width: 60%;
   display: flex;
   flex-direction: column;
-
-  /* justify-items: center; */
 }
 
 main {
   width: 100%;
   display: flex;
   justify-content: space-between;
-
-  /* align-items: center; */
   margin-top: 2rem;
   gap: 2rem;
 }
@@ -44,6 +40,7 @@ main {
 
 .title {
   display: flex;
+  justify-content: space-between;
   gap: 1rem;
 }
 
