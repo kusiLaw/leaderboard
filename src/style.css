@@ -101,6 +101,7 @@ button {
   float: right;
   height: 2rem;
   width: 5rem;
+  cursor: pointer;
 }
 
 button:hover {
