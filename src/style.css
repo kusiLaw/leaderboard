@@ -77,9 +77,8 @@ ul {
 
 ul li {
   height: 2rem;
-  padding: auto;
-display: flex;
- align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 ul li:nth-child(even) {
@@ -90,8 +89,8 @@ ul li:nth-child(even) {
   margin-left: 0.5em;
 }
 
-#error{
- color: red;
- font-size: small;
- font-style: italic;
+#error {
+  color: red;
+  font-size: small;
+  font-style: italic;
 }
