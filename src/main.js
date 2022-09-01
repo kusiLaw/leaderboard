@@ -1,49 +1,42 @@
-import { getLocalStorage, setLocalStorage } from './module/storage.js';
-import Scores from './module/score.js';
 import generateList from './module/generate_list.js';
+import Api from './module/api.js';
 
 const form = document.getElementById('add-form');
-const scores = new Scores();
-const data = [
-  { name: 'name', score: 100 },
-  { name: 'name', score: 20 },
-  { name: 'name', score: 50 },
-  { name: 'name', score: 78 },
-  { name: 'name', score: 125 },
-  { name: 'name', score: 77 },
-  { name: 'name', score: 42 },
-];
+const error = document.getElementById('error');
+const api = new Api();
+
+const loadList = async () => {
+  try {
+    const data = await api.getScores();
+    const container = document.getElementById('scoreListContainer');
+    container.innerHTML = '';
+    container.appendChild(generateList(data));
+  } catch {
+    error.innerHTML = 'Server not responding';
+  }
+};
 
 window.onload = () => {
-  const local = getLocalStorage();
-  if (local.length === 0) {
-    scores.data = data;
-  } else {
-    scores.data = local;
-  }
-  const container = document.getElementById('scoreListContainer');
-  container.innerHTML = '';
-  container.appendChild(generateList(scores.data));
+  loadList();
+};
+
+document.getElementById('refresh').onclick = () => {
+  loadList();
 };
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();
-  const playerName = form.elements['p-name'].value;
-  const playerScores = form.elements.scores.value;
-  scores.add({ name: playerName, score: playerScores });
-
-  // Using promise
-  const promise = new Promise((resolve) => {
-    resolve(generateList(scores.data));
-  });
-
-  promise.then(
-    (result) => {
-      const container = document.getElementById('scoreListContainer');
-      container.innerHTML = '';
-      container.appendChild(result);
-    },
-  );
-
-  setLocalStorage(scores.data);
+  const playerName = form.elements['p-name'];
+  const playerScores = form.elements.scores;
+  if (playerName.value !== '' && playerScores.value !== '') {
+    api.newScore({
+      user: playerName.value,
+      score: playerScores.value,
+    });
+    playerName.value = '';
+    playerScores.value = '';
+    error.innerHTML = '';
+  } else {
+    error.innerHTML = 'Name or score should not be empty';
+  }
 });
