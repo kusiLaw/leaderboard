@@ -35,7 +35,6 @@ form.addEventListener('submit', (event) => {
     });
     playerName.value = '';
     playerScores.value = '';
-    loadList();
     error.innerHTML = '';
   } else {
     error.innerHTML = 'Name or score should not be empty';
