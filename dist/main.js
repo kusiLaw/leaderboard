@@ -126,7 +126,17 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _sty
   \*********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _module_storage_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./module/storage.js */ \"./src/module/storage.js\");\n/* harmony import */ var _module_score_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./module/score.js */ \"./src/module/score.js\");\n/* harmony import */ var _module_generate_list_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./module/generate_list.js */ \"./src/module/generate_list.js\");\n\n\n\n\nconst form = document.getElementById('add-form');\nconst scores = new _module_score_js__WEBPACK_IMPORTED_MODULE_1__[\"default\"]();\nconst data = [\n  { name: 'name', score: 100 },\n  { name: 'name', score: 20 },\n  { name: 'name', score: 50 },\n  { name: 'name', score: 78 },\n  { name: 'name', score: 125 },\n  { name: 'name', score: 77 },\n  { name: 'name', score: 42 },\n];\n\nwindow.onload = () => {\n  const local = (0,_module_storage_js__WEBPACK_IMPORTED_MODULE_0__.getLocalStorage)();\n  if (local.length === 0) {\n    scores.data = data;\n  } else {\n    scores.data = local;\n  }\n  const container = document.getElementById('scoreListContainer');\n  container.innerHTML = '';\n  container.appendChild((0,_module_generate_list_js__WEBPACK_IMPORTED_MODULE_2__[\"default\"])(scores.data));\n};\n\nform.addEventListener('submit', (event) => {\n  event.preventDefault();\n  const playerName = form.elements['p-name'].value;\n  const playerScores = form.elements.scores.value;\n  scores.add({ name: playerName, score: playerScores });\n\n  // Using promise\n  const promise = new Promise((resolve) => {\n    resolve((0,_module_generate_list_js__WEBPACK_IMPORTED_MODULE_2__[\"default\"])(scores.data));\n  });\n\n  promise.then(\n    (result) => {\n      const container = document.getElementById('scoreListContainer');\n      container.innerHTML = '';\n      container.appendChild(result);\n    },\n  );\n\n  (0,_module_storage_js__WEBPACK_IMPORTED_MODULE_0__.setLocalStorage)(scores.data);\n});\n\n\n//# sourceURL=webpack://webpack-boilerplate/./src/main.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _module_generate_list_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./module/generate_list.js */ \"./src/module/generate_list.js\");\n/* harmony import */ var _module_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./module/api.js */ \"./src/module/api.js\");\n\n\n\n\n\nconst form = document.getElementById('add-form');\nlet api = new _module_api_js__WEBPACK_IMPORTED_MODULE_1__[\"default\"]()\nconst scores = new Scores();\n\nconst  loadList = async() =>{\n try{\n  let data = await api.getScores()\n  const container = document.getElementById('scoreListContainer');\n  container.innerHTML = '';\n  container.appendChild((0,_module_generate_list_js__WEBPACK_IMPORTED_MODULE_0__[\"default\"])(data));\n }catch(e){\n  window.alert(e.message)\n }\n \n}\n\nwindow.onload = () => {\n loadList()\n};\n\n\ndocument.getElementById('refresh').onclick = () =>{\n loadList()\n}\n\nform.addEventListener('submit', (event) => {\n  event.preventDefault();\n  const playerName = form.elements['p-name'].value;\n  const playerScores = form.elements.scores.value;\n  scores.add({ name: playerName, score: playerScores });\n  \n  api.newScore({ \n   \"user\": playerName,\n   \"score\": playerScores\n  })\n\n});\n\n\n\n\n\n\n\n//# sourceURL=webpack://webpack-boilerplate/./src/main.js?");
+
+/***/ }),
+
+/***/ "./src/module/api.js":
+/*!***************************!*\
+  !*** ./src/module/api.js ***!
+  \***************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\nclass Api {\n url = 'https://us-central1-js-capstone-backend.cloudfunctions.net/api/games/o8IWtze82YmVpYmdLyib/scores/';\n\n\n static api = async(object = {}, ) => {\n  return \n }\n\n async newGame(object) {\n  const response = await fetch(this.url, {\n   method: \"POST\",\n   body: JSON.stringify({\n    ...object\n   }),\n   headers: {\n     'Content-type': 'application/json; charset=UTF-8',\n   },\n  }) \n  const results = await response.json();\n  return results.result.split(\" \")[3]\n }\n\n async newScore(object) {\n   \n  await fetch(this.url, {\n   method: \"POST\",\n   body: JSON.stringify({\n    ...object\n   }),\n   headers: {\n     'Content-type': 'application/json; charset=UTF-8',\n   },\n  })\n\n }\n\n async getScores() {\n \n try{\n  const response = await fetch(this.url, {\n   method: \"GET\",\n   headers: {\n     'Content-type': 'application/json; charset=UTF-8',\n   },\n  })\n\n   const results = await response.json();\n   console.log(results)\n   return results\n\n }\n catch(e){\n  return e\n }\n\n }\n\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Api);\n\n \n \n\n//# sourceURL=webpack://webpack-boilerplate/./src/module/api.js?");
 
 /***/ }),
 
@@ -136,27 +146,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _mod
   \*************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\nconst generateList = (array) => {\n  const ul = document.createElement('ul');\n  ul.setAttribute('class', 'score-list');\n\n  array.forEach((element) => {\n    ul.innerHTML += `<li class=\"list-items\">\n   <p><span>${element.name}:</span><span class=\"score-val\">${element.score}</span></p>\n   </li>`;\n  });\n\n  return ul;\n};\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (generateList);\n\n//# sourceURL=webpack://webpack-boilerplate/./src/module/generate_list.js?");
-
-/***/ }),
-
-/***/ "./src/module/score.js":
-/*!*****************************!*\
-  !*** ./src/module/score.js ***!
-  \*****************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\nclass Scores {\n data\n\n constructor(initial = []) {\n   this.data = initial;\n }\n\n add(score) {\n   if (Scores.validate(score)) {\n     this.data = this.data.concat(score);\n   }\n }\n\n reset() {\n   this.data = [];\n }\n\n static validate(score) {\n   if (!('name' in score\n   && 'score' in score)) {\n     return false;\n   }\n   return true;\n }\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Scores);\n\n//# sourceURL=webpack://webpack-boilerplate/./src/module/score.js?");
-
-/***/ }),
-
-/***/ "./src/module/storage.js":
-/*!*******************************!*\
-  !*** ./src/module/storage.js ***!
-  \*******************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"getLocalStorage\": () => (/* binding */ getLocalStorage),\n/* harmony export */   \"setLocalStorage\": () => (/* binding */ setLocalStorage)\n/* harmony export */ });\nconst getLocalStorage = () => {\n  // Check if data is in storage and convert to js object\n  if (localStorage.getItem('scores')) {\n    return JSON.parse(localStorage.getItem('scores'));\n  }\n  return [];\n};\n\nconst setLocalStorage = (array) => {\n  localStorage.setItem('scores', JSON.stringify(array));\n};\n\n\n\n//# sourceURL=webpack://webpack-boilerplate/./src/module/storage.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\nconst generateList = (array) => {\n\n array = array.result\n  const ul = document.createElement('ul');\n  ul.setAttribute('class', 'score-list');\n\n  for(let i=0; i<array.length; i += 1){\n \n    ul.innerHTML += `<li class=\"list-items\">\n   <p><span>${array[i].user}:</span><span class=\"score-val\">${array[i].score}</span></p>\n   </li>`;\n\n  }\n  return ul;\n};\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (generateList);\n\n//# sourceURL=webpack://webpack-boilerplate/./src/module/generate_list.js?");
 
 /***/ })
 
